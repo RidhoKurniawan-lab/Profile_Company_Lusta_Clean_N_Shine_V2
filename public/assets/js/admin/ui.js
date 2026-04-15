@@ -71,6 +71,7 @@ export async function getProductLink() {
 on('submit', '[data-form-link]', async (e) => {
     e.preventDefault();
     const form = document.querySelector('[data-form-link]');
+    const button = form.querySelector('button[type="submit"]');
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -84,6 +85,9 @@ on('submit', '[data-form-link]', async (e) => {
         return;
     };
 
+    button.disabled = true;
+    button.innerText = 'Loading...';
+    
     try {
         const response = await api(`/api/product_link/update?id=${id}`, {
             method: 'POST',
@@ -138,6 +142,7 @@ on('submit', '[data-form-edit-product]', async (e) => {
     const id = params.get('id');
 
     const form = document.querySelector('[data-form-edit-product]');
+    const button = form.querySelector('button[type="submit"]');
 
     const formData = new FormData(form);
     const productData = Object.fromEntries(formData.entries());
@@ -155,6 +160,10 @@ on('submit', '[data-form-edit-product]', async (e) => {
     if (image instanceof File && image.size > 0) {
         sendData.append('image', image)
     }
+
+    button.disabled = true;
+    button.innerText = 'Loading...';
+
     try {
         const response = await api(`/api/product/update?id=${id}`, {
             method: 'POST',
@@ -223,6 +232,7 @@ on('submit', '[data-form-add-product]', async (e) => {
     e.preventDefault();
 
     const form = document.querySelector('[data-form-add-product]');
+    const button = form.querySelector('button[type="submit"]');
 
     const formData = new FormData(form);
     const productData = Object.fromEntries(formData.entries());
@@ -240,6 +250,10 @@ on('submit', '[data-form-add-product]', async (e) => {
     if (image instanceof File && image.size > 0) {
         sendData.append('image', image)
     }
+
+    button.disabled = true;
+    button.innerText = 'Loading...';
+
     try {
         const response = await api('/api/product/insert', {
             method: 'POST',
